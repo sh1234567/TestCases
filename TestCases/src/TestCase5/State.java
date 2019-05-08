@@ -81,10 +81,9 @@ public class State implements Cloneable {
 			int b[] = new int[n];
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
-					float a_2 = (messages_2[j].getAfter_2() - messages_2[j].getAfter_1())
-							/ (messages_1[j].getAfter_2() - messages_1[j].getAfter_1());
-					float b_2 = messages_2[j].getAfter_2() - (a_2 * messages_1[j].getAfter_2());
-					if (messages_1[i].equals_2(messages_2[j]) && (a_1 == a_2) && (b_1 == b_2) && a[i] != 1
+					if (messages_1[i].equals_2(messages_2[j])
+							&& ((a_1 * messages_1[i].getAfter_1() + b_1) == messages_2[j].getAfter_1())
+							&& ((a_1 * messages_1[i].getAfter_2() + b_1) == messages_2[j].getAfter_2()) && a[i] != 1
 							&& b[j] != 1) {
 						a[i] = 1;
 						b[j] = 1;
@@ -96,6 +95,8 @@ public class State implements Cloneable {
 					return false;
 				}
 			}
+			System.out.println("a: " + a_1);
+			System.out.println("b: " + b_1);
 			return true;
 		}
 
@@ -112,8 +113,10 @@ public class State implements Cloneable {
 	}
 
 	public boolean equals(State a, String mode) {
-		float a_1 = (a.getState_time_2() - a.getState_time_1()) / (this.getState_time_2() - this.getState_time_1());
-		float b_1 = a.getState_time_2() - (a_1 * this.getState_time_2());
+		float a_1;
+		float b_1;
+		a_1 = (a.getState_time_2() - a.getState_time_1()) / (this.getState_time_2() - this.getState_time_1());
+		b_1 = a.getState_time_2() - (a_1 * this.getState_time_2());
 		if (!(this.equalMessageQueue(a.getMessageQueue(), mode, a_1, b_1)))
 			return false;
 		if (!(this.equalActorsArray(a.getActors(), mode)))
